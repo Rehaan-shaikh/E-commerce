@@ -20,15 +20,15 @@ import ShoppingListing from "./pages/shopping-view/Listing";
 import ShoppingAccount from "./pages/shopping-view/Account";
 import UnAuth from "./pages/Unauth-page";
 import CheckAuth from "./components/Common/Check-Auth";
+import { useSelector } from "react-redux";
 
 function App() {
-  //Dummy   data
-  const isAuthenticated = false;
-  const user = null;
+  const { user, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
   return (
     <div className="flex flex-col overflow-hidden bg-yellow-50">
       {/* Common compponents */}
-      <h1>Header of app</h1>
 
       <Routes>
         <Route path="/auth" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AuthLayout/></CheckAuth>}>

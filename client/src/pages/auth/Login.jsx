@@ -1,10 +1,11 @@
 import CommonForm from "@/components/common/form";
 // import { useToast } from "@/components/ui/use-toast";
 import { loginFormControls } from "@/config";
-// import { loginUser } from "@/store/auth-slice";
+import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+
 
 const initialState = {
   email: "",
@@ -13,27 +14,27 @@ const initialState = {
 
 function AuthLogin() {
   const [formData, setFormData] = useState(initialState);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
   // const { toast } = useToast();
 
   function onSubmit(event) {
-    console.log(event)
-    // event.preventDefault();
-
-    // dispatch(loginUser(formData)).then((data) => {
-    //   if (data?.payload?.success) {
-    //     toast({
-    //       title: data?.payload?.message,
-    //     });
-    //   } else {
-    //     toast({
-    //       title: data?.payload?.message,
-    //       variant: "destructive",
-    //     });
-    //   }
-    // });
+    event.preventDefault();
+    dispatch(loginUser(formData)).then((data) => {
+    // console.log(data.payload)
+      if (data?.payload?.status==200) {
+        alert("Success")
+        console.log(data?.payload ,"PAylod Ex");
+        // toast({
+        //   title: data?.payload?.message,
+        // });
+    }
+    else{
+      // console.log(data)
+      alert(data.payload.message);
+    }
+  })
   }
-
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">

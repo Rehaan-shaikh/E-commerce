@@ -5,7 +5,7 @@ const router = Router();
 
 
 // * For user Routes
-router.use("/api/user/register", UserRoutes);
+router.use("/api/user", UserRoutes);
 
 
 export default router;

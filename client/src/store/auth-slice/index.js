@@ -49,6 +49,41 @@ export const loginUser = createAsyncThunk(
  }
 );
 
+export const logoutUser = createAsyncThunk(
+  "/auth/logout",
+
+  async () => {
+    const response = await axios.post(
+      "http://localhost:3000/api/user/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    return response.data;
+  }
+);
+// checkAuth is automatically get called when refresh beacuse of useEffect in the app.jsx
+export const checkAuth = createAsyncThunk(
+  "/auth/checkauth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/user/check-auth",
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("CheckAuth Error:", error);
+      return rejectWithValue(error.response?.data || "Auth failed");
+    }
+  }
+);
+
+
 // he authSlice is a slice of the Redux store that manages the state related to authentication in this application
 const authSlice = createSlice({
   name: "auth",  //name of the slice
@@ -92,6 +127,24 @@ const authSlice = createSlice({
         // console.log(state.isAuthenticated , "boolean")
       })
       .addCase(loginUser.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;    
+        state.isAuthenticated = true;        
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;       
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;

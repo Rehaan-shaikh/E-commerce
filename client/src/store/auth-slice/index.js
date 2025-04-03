@@ -120,7 +120,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        // console.log(action , "action");
+        console.log(action , "action");
 
         state.isLoading = false;
         state.user = action.payload.status==200? action.payload.data : null;
@@ -140,7 +140,12 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;    
+<<<<<<< HEAD
         state.isAuthenticated = true;      
+=======
+        state.isAuthenticated = true;  
+        console.log(action,"chechkout")      
+>>>>>>> 1fb8471b66e6164b87145384c91716f474f52b01
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;

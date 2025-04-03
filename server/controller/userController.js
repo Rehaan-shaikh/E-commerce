@@ -32,7 +32,7 @@ export const RegisterUser = async (req, res) => {
             httpOnly: true,
             secure: false,
             sameSite: "Lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
+            maxAge: 60 * 60 * 1000 
         });
 
         return res.status(201).json({
@@ -57,7 +57,8 @@ export const LoginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findUnique({ where: { email }, });
+        console.log(user, "hi i am user from login")
 
         if (!user) {
             return res.status(401).json({ status: 401, message: "Invalid email" });
@@ -68,28 +69,48 @@ export const LoginUser = async (req, res) => {
             return res.status(401).json({ status: 401, message: "Invalid password" });
         }
 
+        console.log(user, "hi i am user from login")
+        
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
             JWT_SECRET,
+<<<<<<< HEAD
             { expiresIn: "1h" }                                                                                      
+=======
+            { expiresIn: "1h" }  
+>>>>>>> 1fb8471b66e6164b87145384c91716f474f52b01
         );
+
+        console.log(token, "hi i am token from login")
 
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "Lax",
+<<<<<<< HEAD
             maxAge: 60 * 60 * 1000   //1hr
+=======
+            maxAge: 60 * 60 * 1000 
+>>>>>>> 1fb8471b66e6164b87145384c91716f474f52b01
         });
 
         return res.status(200).json({
             status: 200,
             success: true,
             message: "Login successful",
+<<<<<<< HEAD
             data: { // Key change: using "data" instead of "user" to match checkAuth
               id: user.id,
               email: user.email,
               username: user.username, // Make sure this matches your Prisma field name
               role: user.role // This should now properly reflect the DB value
+=======
+            user: {
+                id: user.id,
+                email: user.email,
+                userName: user.username,
+                role: user.role
+>>>>>>> 1fb8471b66e6164b87145384c91716f474f52b01
             }
           });
     } catch (error) {
@@ -110,15 +131,29 @@ export const CheckAuth = async (req, res) => {
         const decoded = jwt.verify(token, JWT_SECRET);
         console.log(decoded);
         const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+        console.log(user , "hi i am user data")
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
+        console.log(user , "hi i am user data")
+
+        console.log(token, "hi i am token from login")
+
         return res.status(200).json({
             success: true,
             message: "User authenticated",
+<<<<<<< HEAD
             user
+=======
+            user: {
+                id: user.id,
+                email: user.email,
+                userName: user.username,
+                role: user.role
+            }
+>>>>>>> 1fb8471b66e6164b87145384c91716f474f52b01
         });
         
 

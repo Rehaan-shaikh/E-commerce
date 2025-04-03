@@ -21,6 +21,7 @@ export const RegisterUser = async (req, res) => {
             data: { username: userName, email, password: hashedPassword }
         });
 
+        //doesnt necessarily need this during registration
         const token = jwt.sign(
             { id: newUser.id, email: newUser.email, role: "user" },
             JWT_SECRET,
@@ -59,38 +60,38 @@ export const LoginUser = async (req, res) => {
         const user = await prisma.user.findUnique({ where: { email } });
 
         if (!user) {
-            return res.status(401).json({ status: 401, message: "Invalid email or password" });
+            return res.status(401).json({ status: 401, message: "Invalid email" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ status: 401, message: "Invalid email or password" });
+            return res.status(401).json({ status: 401, message: "Invalid password" });
         }
 
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
             JWT_SECRET,
-            { expiresIn: "1h" }  // 7 days
+            { expiresIn: "1h" }                                                                                      
         );
 
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "Lax",
-            maxAge: 60 * 60 * 1000 // 7 days
+            maxAge: 60 * 60 * 1000   //1hr
         });
 
         return res.status(200).json({
             status: 200,
             success: true,
             message: "Login successful",
-            user: {
-                id: user.id,
-                email: user.email,
-                userName: user.username
+            data: { // Key change: using "data" instead of "user" to match checkAuth
+              id: user.id,
+              email: user.email,
+              username: user.username, // Make sure this matches your Prisma field name
+              role: user.role // This should now properly reflect the DB value
             }
-        });
-
+          });
     } catch (error) {
         console.error("Error in LoginUser:", error);
         return res.status(500).json({ success: false, message: "Error logging in", error: error.message });
@@ -107,7 +108,7 @@ export const CheckAuth = async (req, res) => {
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-
+        console.log(decoded);
         const user = await prisma.user.findUnique({ where: { id: decoded.id } });
 
         if (!user) {
@@ -117,12 +118,9 @@ export const CheckAuth = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "User authenticated",
-            user: {
-                id: user.id,
-                email: user.email,
-                userName: user.username
-            }
+            user
         });
+        
 
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {

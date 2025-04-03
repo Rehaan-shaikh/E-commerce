@@ -15,8 +15,6 @@ const initialState = {
 function AuthLogin() {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { toast } = useToast();
 
   function onSubmit(event) {
     event.preventDefault();
@@ -24,10 +22,7 @@ function AuthLogin() {
     // console.log(data.payload)
       if (data?.payload?.status==200) {
         alert("Success")
-        console.log(data?.payload ,"PAylod Ex");
-        // toast({
-        //   title: data?.payload?.message,
-        // });
+        // console.log(data?.payload ,"Paylod Ex");
     }
     else{
       // console.log(data)

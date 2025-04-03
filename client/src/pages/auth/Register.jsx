@@ -19,6 +19,7 @@ function AuthRegister() {
 
   function onSubmit(event) {
     event.preventDefault();
+    //dispatch triggers the registerUser fun (action) and returns a promise
     dispatch(registerUser(formData)).then((data) => {
       if (data?.payload?.success) {
         alert(data?.payload?.message);

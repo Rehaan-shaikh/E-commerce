@@ -13,6 +13,7 @@ const initialState = {
 // createAsyncThunk is a function from Redux Toolkit that allows you to handle asynchronous operations
 export const registerUser = createAsyncThunk(
   "/auth/register",
+  // u dont have to necessaarily pass this path
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
@@ -32,7 +33,6 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "/auth/login",
-  // u dont have to necessaarily pass thijs path
   async (formData , { rejectWithValue }) => {
     try{
     const response = await axios.post(
@@ -42,12 +42,15 @@ export const loginUser = createAsyncThunk(
         withCredentials: true,
       }
     );
+    console.log(response.data , "response data")
     return response.data;
   }catch(error){
     return rejectWithValue(error.response.data);
   }
  }
 );
+
+
 
 export const logoutUser = createAsyncThunk(
   "/auth/logout",
@@ -64,6 +67,7 @@ export const logoutUser = createAsyncThunk(
     return response.data;
   }
 );
+
 // checkAuth is automatically get called when refresh beacuse of useEffect in the app.jsx
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
@@ -84,14 +88,13 @@ export const checkAuth = createAsyncThunk(
 );
 
 
-// he authSlice is a slice of the Redux store that manages the state related to authentication in this application
+// This authSlice is a name of a slice of the Redux store that manages the state related to authentication in this application
 const authSlice = createSlice({
   name: "auth",  //name of the slice
   initialState,  //this 2 parameters are part of slice syntax(initialState and name)
 
   reducers: {
-     
-    setUser: (state, action) => {},
+    setUser: (state, action) => {},  //setUser can be any name which is a reducer function that updates the user state in the Redux store.
   },
 
   // extraReducers is where you handle asynchronous actions (like API calls) that are defined outside the slice.
@@ -137,7 +140,7 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;    
-        state.isAuthenticated = true;        
+        state.isAuthenticated = true;      
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;

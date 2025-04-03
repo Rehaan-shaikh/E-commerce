@@ -19,17 +19,24 @@ import ShoppingAccount from "./pages/shopping-view/Account";
 import UnAuth from "./pages/Unauth-page";
 import CheckAuth from "./components/Common/Check-Auth";
 import NotFound from "./pages/not-found";
+import { Skeleton } from "./components/ui/skeleton";
 
 function App() {
-  const { user, isAuthenticated } = useSelector(
+  const { user, isAuthenticated , isLoading} = useSelector(
     (state) => state.auth || {}   
   );
+
+  // console.log(isAuthenticated, user, isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
   
+  if(isLoading) {
+    return <Skeleton className="w-[100px] h-[20px] rounded-full" />
+
+  }  
 
   return (
     <div className="flex flex-col overflow-hidden bg-yellow-50">
@@ -38,9 +45,9 @@ function App() {
         <Route
           path="/auth"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user} isLoading={isLoading}>
               <AuthLayout />
-            </CheckAuth>
+            </CheckAuth>         
           }
         >
           <Route path="login" element={<Login />} />
@@ -51,7 +58,7 @@ function App() {
         <Route
           path="/admin"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user} isLoading={isLoading}>
               <AdminLayout />
             </CheckAuth>
           }
@@ -66,7 +73,7 @@ function App() {
         <Route
           path="/shop"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user} isLoading={isLoading}>
               <ShoppingLayout />
             </CheckAuth>
           }

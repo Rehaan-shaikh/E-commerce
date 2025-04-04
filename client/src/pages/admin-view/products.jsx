@@ -4,6 +4,7 @@ import {Sheet, SheetContent , SheetHeader , SheetTitle } from '@/components/ui/s
 import { addProductFormElements } from '@/config';
 import React from 'react'
 import { useState , Fragment} from 'react';
+import ProductImageUpload from './imageUpload';
 
 const initialState = {
   image : null,
@@ -18,7 +19,9 @@ const initialState = {
 const AdminProducts = () => {
   const [openCreateProductsDialog, setOpenCreateProductsDialog] = useState(false);
   const [formData, setFormData] = useState(initialState);
-  
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
   function onSubmit() {
     
   }
@@ -33,9 +36,16 @@ const AdminProducts = () => {
           <SheetHeader>
             <SheetTitle>Add New Product</SheetTitle>
           </SheetHeader>
+          
+          <ProductImageUpload 
+          imageFile={imageFile}
+          setImageFile={setImageFile}
+          uploadedImageUrl={uploadedImageUrl}
+          setUploadedImageUrl={setUploadedImageUrl}/>
+
           <div className='py-6'>
             <CommonForm formData={formData} setFormData={setFormData} buttonText="Add" onSubmit={onSubmit} formControls={addProductFormElements} />
-            </div> 
+          </div> 
         </SheetContent>
         </Sheet>  
     </Fragment>

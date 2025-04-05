@@ -20,7 +20,6 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
 
     function handleDragOver(event) {
         event.preventDefault();
-        
     }
     function handleDrop(event) {
         event.preventDefault();
@@ -51,6 +50,8 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
+            // It is used to link a <label> to a specific input element using the input’s id
+            //when the label is clicked, it will automatically trigger a click on the input, which opens the file picker.
             className={`flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
@@ -63,6 +64,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
             <p className="text-sm font-medium">{imageFile.name}</p>
             <Button
               variant="ghost"
+              //This ghost variant is used to create a button that has no background or border, making it blend in with the background.
               size="icon"
               className="text-muted-foreground hover:text-foreground"
               onClick={handleRemoveImage}

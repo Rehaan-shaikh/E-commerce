@@ -4,7 +4,7 @@ import {Sheet, SheetContent , SheetHeader , SheetTitle } from '@/components/ui/s
 import { addProductFormElements } from '@/config';
 import React from 'react'
 import { useState , Fragment} from 'react';
-import ProductImageUpload from './imageUpload';
+import ProductImageUpload from '../../components/admin-view/imageUpload';
 
 const initialState = {
   image : null,
@@ -32,6 +32,7 @@ const AdminProducts = () => {
         <Button onClick={()=>setOpenCreateProductsDialog(true)}> Add New Products</Button>
       </div> 
       <Sheet open={openCreateProductsDialog} onOpenChange={()=>setOpenCreateProductsDialog(false)}>
+        {/* //this open and onOpenChange is used to open and close the sheet */}
         <SheetContent side="right" className="overflow-auto">
           <SheetHeader>
             <SheetTitle>Add New Product</SheetTitle>

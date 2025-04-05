@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import routes from "./routes/index.js";
 import cookieParser from "cookie-parser";
+import adminProductsRouter from "./routes/admin/products-routes.js"
 const app = express()
 const port = 3000
 
@@ -25,6 +26,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(routes);
+app.use("/api/admin/products", adminProductsRouter);
 
 
 app.get('/', (req, res) => {

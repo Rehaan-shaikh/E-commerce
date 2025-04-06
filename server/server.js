@@ -28,7 +28,6 @@ app.use(cookieParser());
 app.use(routes);
 app.use("/api/admin/products", adminProductsRouter);
 
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

@@ -5,16 +5,17 @@ import { Label } from '@radix-ui/react-label';
 import { UploadCloudIcon, XIcon } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 import axios from 'axios';
+import { Skeleton } from '../ui/skeleton';
 
 // eslint-disable-next-line no-unused-vars
-const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl,setImageLoadingState,imageLoadingState
+const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl,imageLoadingState , setImageLoadingState , isEditMode
 }) => {
     
     const inputRef = useRef(null)
 
     function handleImageFileChange(event) {
         event.preventDefault();
-        console.log(event.target.files, "event.target.files");
+        // console.log(event.target.files, "event.target.files");
         const selectedFile = event.target.files?.[0];
         if(selectedFile)
             setImageFile(selectedFile);
@@ -25,7 +26,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
     }
     function handleDrop(event) {
         event.preventDefault();
-        console.log(event.dataTransfer.files, "event.dataTransfer.files");
+        // console.log(event.dataTransfer.files, "event.dataTransfer.files");
         const droppedFile = event.dataTransfer.files?.[0];
         if(droppedFile)
             setImageFile(droppedFile);
@@ -45,7 +46,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
           "http://localhost:3000/api/admin/products/upload-image",
           data
         );
-        console.log(response, "i am cloudinary response");
+        // console.log(response, "i am cloudinary response");
     
         if (response?.data?.success) {
           setUploadedImageUrl(response.data.result.url);
@@ -61,14 +62,16 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
   return (
     <div>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
-      <div className="border-2 border-dashed rounded-lg p-4" onDragOver={handleDragOver} onDrop={handleDrop}>
+      <div className={`${
+          isEditMode ? "opacity-60" : ""
+        } border-2 border-dashed rounded-lg p-4`} onDragOver={handleDragOver} onDrop={handleDrop}>
         <Input
           id="image-upload"
           type="file"
           className="hidden"
           ref={inputRef}
           onChange={handleImageFileChange}
-        //   disabled={isEditMode}
+          disabled={isEditMode}
         />
         {!imageFile ? (
           <Label
@@ -80,7 +83,9 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & drop or click to upload image</span>
           </Label>
-        ) :<div className="flex items-center justify-between">
+        ) : (
+        imageLoadingState? <Skeleton className="h-10 bg-gray-200"/> :
+        <div className="flex items-center justify-between">
             <div className="flex items-center">
                 <UploadCloudIcon className="w-8 text-primary mr-2 h-8" />
             </div>
@@ -95,7 +100,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
               <XIcon className="w-4 h-4" />
               <span className="sr-only">Remove File</span>
             </Button>
-            </div>}
+            </div>)}
       </div>
 
     </div>
@@ -209,9 +214,9 @@ export default ProductImageUpload
 //       <div
 //         onDragOver={handleDragOver}
 //         onDrop={handleDrop}
-//         className={`${
-//           isEditMode ? "opacity-60" : ""
-//         } border-2 border-dashed rounded-lg p-4`}
+        // className={`${
+        //   isEditMode ? "opacity-60" : ""
+        // } border-2 border-dashed rounded-lg p-4`}
 //       >
         // <Input
         //   id="image-upload"

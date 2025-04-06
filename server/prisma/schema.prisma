@@ -21,3 +21,17 @@ model User {
   role       String    @default("user")
 }
 
+model Product {
+  id             Int      @id @default(autoincrement())
+  image          String?
+  title          String?
+  description    String?
+  category       String?
+  brand          String?
+  price          Float?
+  salePrice      Float?
+  totalStock     Int?
+  averageReview  Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

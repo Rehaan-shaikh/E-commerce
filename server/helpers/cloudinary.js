@@ -10,7 +10,7 @@ cloudinary.config({
 const storage = multer.memoryStorage();//Multer is a Node.js middleware used for handling multipart/form-data, which is primarily used for uploading files.
 const upload = multer({ storage });
 
-async function imageUploadUtil(file) {
+async function imageUploadUtil(file) {  //file is the url of image which we get from handleimageupload function
   const result = await cloudinary.uploader.upload(file, {
     resource_type: "auto",
   });

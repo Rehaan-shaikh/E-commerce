@@ -57,7 +57,7 @@ export const LoginUser = async (req, res) => {
 
     try {
         const user = await prisma.user.findUnique({ where: { email }, });
-        console.log(user, "hi i am user from login")
+        // console.log(user, "hi i am user from login")
 
         if (!user) {
             return res.status(401).json({ status: 401, message: "Invalid email or password" });
@@ -68,7 +68,7 @@ export const LoginUser = async (req, res) => {
             return res.status(401).json({ status: 401, message: "Invalid email or password" });
         }
 
-        console.log(user, "hi i am user from login")
+        // console.log(user, "hi i am user from login")
         
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
@@ -76,7 +76,7 @@ export const LoginUser = async (req, res) => {
             { expiresIn: "1h" }  
         );
 
-        console.log(token, "hi i am token from login")
+        // console.log(token, "hi i am token from login")
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -115,15 +115,15 @@ export const CheckAuth = async (req, res) => {
         const decoded = jwt.verify(token, JWT_SECRET);
 
         const user = await prisma.user.findUnique({ where: { id: decoded.id } });
-        console.log(user , "hi i am user data")
+        // console.log(user , "hi i am user data")
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        console.log(user , "hi i am user data")
+        // console.log(user , "hi i am user data")
 
-        console.log(token, "hi i am token from login")
+        // console.log(token, "hi i am token from login")
 
         return res.status(200).json({
             success: true,

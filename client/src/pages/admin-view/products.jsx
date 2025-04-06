@@ -70,7 +70,7 @@ const AdminProducts = () => {
   }
 
   function handleDelete(deleteProductId) {
-    console.log(deleteProductId , "delete product")
+    // console.log(deleteProductId , "delete product")
     dispatch(deleteProduct(deleteProductId)).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchAllProducts());

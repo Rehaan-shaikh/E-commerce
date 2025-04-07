@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
 import {
   Link,
@@ -13,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "../ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import { shoppingViewHeaderMenuItems } from "@/config";
@@ -23,9 +24,9 @@ function MenuItems(){
     {
       shoppingViewHeaderMenuItems.map(menuItem=><Link className="text-sm font-medium cursor-pointer" key={menuItem.id} to={menuItem.path} >{menuItem.label}</Link>)
     }
-
-  </nav>
+</nav>
 }
+
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
@@ -35,8 +36,6 @@ function HeaderRightContent() {
   function handleLogout() {
     dispatch(logoutUser());
   }
-
-
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
@@ -117,3 +116,4 @@ function ShoppingHeader() {
 }
 
 export default ShoppingHeader;
+

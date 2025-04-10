@@ -4,6 +4,8 @@ import "dotenv/config";
 import routes from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import adminProductsRouter from "./routes/admin/products-routes.js"
+import shopProductsRouter from "./routes/shop/products-routes.js"
+
 const app = express()
 const port = 3000
 
@@ -27,6 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(routes);
 app.use("/api/admin/products", adminProductsRouter);
+app.use("/api/shop/products", shopProductsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

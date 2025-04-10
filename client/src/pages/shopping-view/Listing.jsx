@@ -15,13 +15,28 @@ import { sortOptions } from "@/config";
 //   fetchProductDetails,
 // } from "@/store/shop/products-slice";
 import { ArrowUpDownIcon } from "lucide-react";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { useSearchParams } from "react-router-dom";
 
 import React from 'react'
+import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import ShoppingProductTile from "@/components/shopping-view/product-tile";
 
 const ShoppingListing = () => {
+
+  const dispatch = useDispatch();
+  const { productList } = useSelector(
+    (state) => state.shopProducts
+  );
+
+  useEffect(() => {
+    dispatch(fetchAllFilteredProducts())
+  }, [dispatch]);
+  
+  // console.log(productList, "i am productlis")
+
+
   return (
     <div className='grid  md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6'>
       <ProductFilter />
@@ -58,17 +73,18 @@ const ShoppingListing = () => {
             </DropdownMenu>
           </div>
         </div>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((productItem) => (
                 <ShoppingProductTile
-                  handleGetProductDetails={handleGetProductDetails}
+                  // handleGetProductDetails={handleGetProductDetails}
+                  key={productItem.id}
                   product={productItem}
-                  handleAddtoCart={handleAddtoCart}
+                  // handleAddtoCart={handleAddtoCart}
                 />
               ))
             : null}
-        </div> */}
+        </div>
       </div>
       {/* <ProductDetailsDialog
         open={openDetailsDialog}

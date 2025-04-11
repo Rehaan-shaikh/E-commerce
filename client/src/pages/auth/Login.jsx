@@ -24,7 +24,7 @@ function AuthLogin() {
     // console.log(data.payload)
       if (data?.payload?.status==200) {
         alert("Success")
-        console.log(data?.payload ,"PAylod Ex");
+        // console.log(data?.payload ,"PAylod Ex");
         // toast({
         //   title: data?.payload?.message,
         // });

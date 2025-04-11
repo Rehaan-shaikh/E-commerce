@@ -25,7 +25,7 @@ function AuthRegister() {
         navigate("/auth/login");
       } else {
         // Display the error message from the backend
-        console.log(data.payload);
+        // console.log(data.payload);
         alert(data?.payload?.message || "Registration failed");
       }
     });

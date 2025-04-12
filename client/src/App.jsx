@@ -36,6 +36,15 @@ function App() {
       <Routes>
         {/* Auth Routes */}
         <Route
+          path="/"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
+        </Route>   
+        <Route
           path="/auth"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} user={user}>
@@ -79,6 +88,7 @@ function App() {
 
         <Route path="/unauth-page" element={<UnAuth />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </div>
   );

@@ -5,12 +5,14 @@ function CheckAuth({ isAuthenticated, user, children }) {
 
   // console.log(location.pathname, isAuthenticated);
 
+  // if(!isAuthenticated && location.pathname.includes("/")){
+  //   return <Navigate to="/auth/login" />;
+  // }
   if (
     !isAuthenticated &&
     !(
       location.pathname.includes("/login") ||
-      location.pathname.includes("/register") || 
-      location.pathname.includes("/")
+      location.pathname.includes("/register") 
     )
   ) {
     return <Navigate to="/auth/login" />;

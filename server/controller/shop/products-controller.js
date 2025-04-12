@@ -5,10 +5,19 @@ export const getFilteredProducts = async (req, res) => {
     const { category = [], brand = [], sortBy = "price-lowtohigh" } = req.query;
 
     let where = {};
+    let orderBy = {};
+    // console.log(where, orderBy, "where and orderBy");
+    // {
+    //   category: { in: [ 'men', 'women' ] },
+    //   brand: { in: [ 'nike', 'adidas' ] }
+    // } 
+    // { title: 'asc' } where and orderBy
 
     if (category.length) {
-      where.category = {
+      where.category = {  //it adds a new category key to the where object
         in: category.split(",")
+        //initially category = "men,women"
+        // category.split(",") // ➜ ['men', 'women'] 
       };
     }
 
@@ -17,8 +26,6 @@ export const getFilteredProducts = async (req, res) => {
         in: brand.split(",")
       };
     }
-
-    let orderBy = {};
 
     switch (sortBy) {
       case "price-lowtohigh":
@@ -41,6 +48,17 @@ export const getFilteredProducts = async (req, res) => {
     const products = await prisma.product.findMany({
       where,
       orderBy
+      //this is how prisma sees this 2 objects
+      // {
+      //   where: {
+      //     category: {
+      //       in: ['men', 'women']
+      //     }
+      //   },
+      //   orderBy: {
+      //     price: 'asc'
+      //   }
+      // }
     });
 
     res.status(200).json({

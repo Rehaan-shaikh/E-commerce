@@ -10,18 +10,28 @@ const initialState = {
 export const fetchAllFilteredProducts = createAsyncThunk(
   "/products/fetchAllProducts",
   async ({ filterParams, sortParams }) => {
-    console.log(fetchAllFilteredProducts, "fetchAllFilteredProducts");
+    // console.log(filterParams, sortParams, "filter and sort params from redux");
 
     const query = new URLSearchParams({
       ...filterParams,
       sortBy: sortParams,
+      
+      // the above 2 lines can be replaced with the below lines for understanding of what is happening
+      // {
+      //   category: ['men', 'women'],
+      //   brand: ['h&m', 'adidas'],
+      //   sortBy: 'price-hightolow'
+      // }
+      // now URLSearchParams will convert this object to a query string like this:
+      // category=men,women&brand=h&m,adidas&sortBy=price-hightolow
     });
+    // console.log(query, "query params from redux");
 
     const result = await axios.get(
       `http://localhost:3000/api/shop/products/get?${query}`
     );
 
-    console.log(result);
+    // console.log(result);
 
     return result?.data;
   }

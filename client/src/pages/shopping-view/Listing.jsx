@@ -42,7 +42,7 @@ function createSearchParamsHelper(filterParams) {
     }
   }
 
-  console.log(queryParams, "queryParams");
+  // console.log(queryParams, "queryParams");
 
   return queryParams.join("&");
 }

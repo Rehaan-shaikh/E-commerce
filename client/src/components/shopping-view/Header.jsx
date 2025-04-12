@@ -1,9 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,19 +11,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import { shoppingViewHeaderMenuItems } from "@/config";
 
-function MenuItems(){
-  return <nav className="flex flex-col mb-3 bg lg:mb-0 lg:items-center gap-6 lg:flex-row">
-    {
-      shoppingViewHeaderMenuItems.map(menuItem=><Link className="text-sm font-medium cursor-pointer" key={menuItem.id} to={menuItem.path} >{menuItem.label}</Link>)
-    }
-</nav>
+function MenuItems() {
+  return (
+    <nav className="flex flex-col mb-3 bg lg:mb-0 lg:items-center gap-6 lg:flex-row">
+      {shoppingViewHeaderMenuItems.map((menuItem) => (
+        <Link
+          className="text-sm font-medium cursor-pointerb pl-2"
+          key={menuItem.id}
+          to={menuItem.path}
+        >
+          {menuItem.label}
+        </Link>
+      ))}
+    </nav>
+  );
 }
-
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
@@ -40,46 +44,54 @@ function HeaderRightContent() {
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Button variant="outline" size="icon" className="relative">
-        <ShoppingCart className="w-6 h-6" />  
+        <ShoppingCart className="w-6 h-6" />
         <span className="sr-only">User Cart</span>
       </Button>
-      <DropdownMenu>
+
+      <DropdownMenu >
         <DropdownMenuTrigger asChild>
-          <Avatar className="bg-black">
+          <Avatar className="bg-black cursor-pointer">
             <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName[0].toUpperCase()}
+              {user?.userName?.[0]?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuContent
+          side="right"
+          className="w-56 p-4 pl-6 rounded-2xl border border-gray-200 shadow-lg"
+        >
+          <div className="flex flex-col justify-between h-48">
+            <div>
+              <DropdownMenuLabel>
+                Logged in as {user?.userName}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+            </div>
 
-          <DropdownMenuItem
-            onClick={() => navigate("/shop/account")}
-            className="flex items-center gap-2"
-          >
-            <UserCog className="h-4 w-4" />
-            <span>Account</span>
-          </DropdownMenuItem>
+            <div className="flex flex-col gap-1 mt-auto">
+              <DropdownMenuItem
+                onClick={() => navigate("/shop/account")}
+                className="flex items-center gap-2"
+              >
+                <UserCog className="h-4 w-4" />
+                <span>Account</span>
+              </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            onClick={handleLogout}
-            className="flex items-center gap-2"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Logout</span>
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </DropdownMenuItem>
+            </div>
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
-
     </div>
   );
 }
-
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -91,6 +103,7 @@ function ShoppingHeader() {
           <HousePlug className="h-6 w-6" />
           <span className="font-bold">Ecommerce</span>
         </Link>
+
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
@@ -98,11 +111,21 @@ function ShoppingHeader() {
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
-            <MenuItems />
-            <HeaderRightContent />
+
+          {/* SheetContent with fixed bottom content for mobile */}
+          <SheetContent
+            side="left"
+            className="w-full max-w-xs flex flex-col justify-between"
+          >
+            <div className="mt-4">
+              <MenuItems />
+            </div>
+            <div className="px-4 pb-4">
+              <HeaderRightContent />
+            </div>
           </SheetContent>
         </Sheet>
+
         <div className="hidden lg:block">
           <MenuItems />
         </div>
@@ -116,4 +139,3 @@ function ShoppingHeader() {
 }
 
 export default ShoppingHeader;
-

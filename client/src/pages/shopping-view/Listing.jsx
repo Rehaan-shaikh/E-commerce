@@ -38,7 +38,7 @@ function createSearchParamsHelper(filterParams) {
       // This joins the array into a string. Example: ["nike", "adidas"] → "nike,adidas"
       const paramValue = value.join(",");  //%2C is just encoded , which is used in the URL to separate multiple values.
 
-      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);  //queryParams is an array of 2 strings
     }
   }
 
@@ -55,27 +55,30 @@ const ShoppingListing = () => {
     (state) => state.shopProducts
   );
 
-  const [filters, setFilters] = useState({}); // filter is object
+  const [filters, setFilters] = useState({}); // filter is object of 2 arrays 
   const [sort, setSort] = useState(null);
 
   // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
-
-  useEffect(() => {
-    dispatch(fetchAllFilteredProducts())
-  }, [dispatch]);
-  
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {}); 
   }, []);
 
   useEffect(() => {
+    if (filters !== null && sort !== null)
+      // console.log(filters ,sort, "filters and sort");  
+      dispatch(
+        fetchAllFilteredProducts({ filterParams: filters, sortParams: sort })
+      );
+  }, [dispatch, sort, filters]);
+
+  useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
       const createQueryString = createSearchParamsHelper(filters);
-      // new URLSearchParams is the built-in URLSearchParams class to turn the string into proper format
+      // new URLSearchParams is the built-in URLSearchParams class to turn the string into proper format,vice versa
       setSearchParams(new URLSearchParams(createQueryString));
     }
   }, [filters]);

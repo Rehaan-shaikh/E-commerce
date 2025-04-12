@@ -73,3 +73,25 @@ export const getFilteredProducts = async (req, res) => {
     });
   }
 };
+
+export const getProductDetails = async (req, res) => {
+  const {id} = req.params;
+  
+  const productDetails = await prisma.product.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+  // console.log( "productDetails ",productDetails , "and its id", id ,);
+
+  if (!productDetails) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: productDetails,
+  });
+}

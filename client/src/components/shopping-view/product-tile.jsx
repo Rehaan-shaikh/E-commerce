@@ -7,12 +7,12 @@ import { brandOptionsMap, categoryOptionsMap } from "../../config"; // or adjust
 
 
 function ShoppingProductTile({
-  product,
+  product,handleProductDetails
 }) {
   return (
     
     <Card className="w-full max-w-sm mx-auto">
-      <div>
+      <div onClick={() => handleProductDetails(product?.id)} className="cursor-pointer">
         <div className="relative">
           <img
             src={product?.image}

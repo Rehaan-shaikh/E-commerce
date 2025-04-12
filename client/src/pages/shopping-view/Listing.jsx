@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import ProductFilter from "@/components/shopping-view/filter";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +8,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { useToast } from "@/components/ui/use-toast";
+
 import { sortOptions } from "@/config";
 // import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 // import {
@@ -20,9 +21,10 @@ import { useDispatch, useSelector } from "react-redux";
 // import { useSearchParams } from "react-router-dom";
 
 import React from 'react'
-import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/products-slice";
 import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
+import ProductDetailsDialog from "@/components/shopping-view/product-details";
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
 function createSearchParamsHelper(filterParams) {
@@ -51,14 +53,14 @@ function createSearchParamsHelper(filterParams) {
 const ShoppingListing = () => {
 
   const dispatch = useDispatch();
-  const { productList } = useSelector(
+  const { productList , productDetails } = useSelector(
     (state) => state.shopProducts
   );
 
   const [filters, setFilters] = useState({}); // filter is object of 2 arrays 
   const [sort, setSort] = useState(null);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
-  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
@@ -81,13 +83,22 @@ const ShoppingListing = () => {
       // new URLSearchParams is the built-in URLSearchParams class to turn the string into proper format,vice versa
       setSearchParams(new URLSearchParams(createQueryString));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
   
+  useEffect(() => {
+    if (productDetails !== null) 
+      setOpenDetailsDialog(true);  
+  },[productDetails]);
 
 
   function handleSort(value) {
     // console.log(value , "dropdown value")
     setSort(value);
+  }
+  function handleProductDetails(id) {
+    // console.log(id, "id from product details")
+    dispatch(fetchProductDetails(id));
   }
 
   function handleFilter(getSectionId, getCurrentOption) {
@@ -115,6 +126,7 @@ const ShoppingListing = () => {
   }
 
   // console.log(productList, "i am productlis")
+  // console.log(productDetails, "i am product details")
   // console.log(filters, "Filters");
   // console.log(sort, "Sort");
 
@@ -161,6 +173,7 @@ const ShoppingListing = () => {
             ? productList.map((productItem) => (
                 <ShoppingProductTile
                   // handleGetProductDetails={handleGetProductDetails}
+                  handleProductDetails={handleProductDetails}
                   key={productItem.id}
                   product={productItem}
                   // handleAddtoCart={handleAddtoCart}
@@ -169,11 +182,11 @@ const ShoppingListing = () => {
             : null}
         </div>
       </div>
-      {/* <ProductDetailsDialog
+      <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
-      /> */}
+      />
     </div>
   ) 
 }

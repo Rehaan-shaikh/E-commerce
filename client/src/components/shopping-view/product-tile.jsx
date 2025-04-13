@@ -7,7 +7,7 @@ import { brandOptionsMap, categoryOptionsMap } from "../../config"; // or adjust
 
 
 function ShoppingProductTile({
-  product,handleProductDetails
+  product,handleProductDetails , handleAddToCart
 }) {
   return (
     
@@ -68,6 +68,7 @@ function ShoppingProductTile({
         ) : (
           <Button
             className="w-full"
+            onClick={() => handleAddToCart(product?.id)}
           >
             Add to cart
           </Button>

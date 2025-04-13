@@ -25,6 +25,7 @@ import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/prod
 import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
 function createSearchParamsHelper(filterParams) {
@@ -56,6 +57,7 @@ const ShoppingListing = () => {
   const { productList , productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { user } = useSelector((state) => state.auth);
 
   const [filters, setFilters] = useState({}); // filter is object of 2 arrays 
   const [sort, setSort] = useState(null);
@@ -125,6 +127,18 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
 
+  function handleAddToCart(productId) {
+    // console.log(productId, "product id from product details dialog")
+    dispatch(addToCart({userId : user?.id, productId : productId , quantity : 1})).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems({userId : user?.id}));
+        alert("Product added to cart successfully");
+    }
+
+  }
+)};
+
+  // console.log(user?.id, "user id from listing page")
   // console.log(productList, "i am productlis")
   // console.log(productDetails, "i am product details")
   // console.log(filters, "Filters");
@@ -176,8 +190,8 @@ const ShoppingListing = () => {
                   handleProductDetails={handleProductDetails}
                   key={productItem.id}
                   product={productItem}
-                  // handleAddtoCart={handleAddtoCart}
-                />
+                  handleAddToCart={handleAddToCart}
+                  />
               ))
             : null}
         </div>

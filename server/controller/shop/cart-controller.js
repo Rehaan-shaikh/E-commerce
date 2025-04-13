@@ -78,12 +78,14 @@ export const addToCart = async (req, res) => {
   }
 };
 
+
 export const fetchCartItems = async (req, res) => {
   try {
     const { userId } = req.params;
+    // console.log(userId, "user id from fetch cart items");
 
     if (!userId) {
-      return res.status(400).json({ success: false, message: "User id is mandatory!" });
+      return res.status(400).json({ success: false, message: "User Not Found" });
     }
 
     const cart = await prisma.cart.findUnique({
@@ -192,6 +194,7 @@ export const updateCartItemQty = async (req, res) => {
 export const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
+    // console.log(userId, productId, "user id and product id from delete cart item");
 
     if (!userId || !productId) {
       return res.status(400).json({ success: false, message: "Invalid data provided!" });
@@ -206,6 +209,7 @@ export const deleteCartItem = async (req, res) => {
     const item = await prisma.cartItem.findFirst({
       where: { cartId: cart.id, productId: Number(productId) },
     });
+    // console.log(item, "item from delete cart item");
 
     if (item) {
       await prisma.cartItem.delete({ where: { id: item.id } });
@@ -229,6 +233,7 @@ export const deleteCartItem = async (req, res) => {
         },
       },
     });
+    // console.log(updatedCart, "updated cart after delete");
 
     const formattedItems = updatedCart.items.map(item => ({
       productId: item.product?.id,

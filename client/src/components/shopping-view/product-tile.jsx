@@ -68,7 +68,7 @@ function ShoppingProductTile({
         ) : (
           <Button
             className="w-full"
-            onClick={() => handleAddToCart(product?.id)}
+            onClick={()=>handleAddToCart(product?.id)}
           >
             Add to cart
           </Button>

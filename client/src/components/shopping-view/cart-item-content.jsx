@@ -134,6 +134,7 @@ const UserCartItemsContent = ({cartItem}) => {
     // const { cartItems } = useSelector((state) => state.shopCart);
 
     const dispatch = useDispatch();
+    
     function handleCartItemDelete(getProductId) {
         // console.log(getProductId , user?.id , "getProductId user?.id")
         dispatch(

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export const addAddress = async (req, res) => {
   try {
     const { userId, address, city, pincode, phone, notes } = req.body;
-    console.log(userId)
+    console.log(req.body);
 
     if (!userId || !address || !city || !pincode || !phone || !notes) {
       return res.status(400).json({
@@ -16,7 +16,7 @@ export const addAddress = async (req, res) => {
 
     const newlyCreatedAddress = await prisma.address.create({
       data: {
-        userId,
+        userId : String(userId), // Convert to string
         address,
         city,
         pincode,
@@ -40,7 +40,7 @@ export const addAddress = async (req, res) => {
 
 export const fetchAllAddress = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.params; 
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -50,7 +50,7 @@ export const fetchAllAddress = async (req, res) => {
 
     const addressList = await prisma.address.findMany({
       where: {
-        userId: parseInt(userId),
+        userId: String(userId), // Convert to string
       },
     });
 
@@ -69,7 +69,7 @@ export const fetchAllAddress = async (req, res) => {
 
 export const editAddress = async (req, res) => {
   try {
-    const userId = Number(req.params.userId);
+    const userId = String(req.params.userId);     // Convert to string
     const addressId = Number(req.params.addressId);
     const formData = req.body;
 
@@ -83,7 +83,7 @@ export const editAddress = async (req, res) => {
     const address = await prisma.address.updateMany({
       where: {
         id: addressId,
-        userId,
+        userId: userId,
       },
       data: formData,
     });
@@ -114,7 +114,7 @@ export const editAddress = async (req, res) => {
 
 export const deleteAddress = async (req, res) => {
   try {
-    const userId = Number(req.params.userId);
+    const userId = String(req.params.userId);     // Convert to string
     const addressId = Number(req.params.addressId);
     console.log('User ID:', userId);
     console.log('Address ID:', addressId);
@@ -129,7 +129,7 @@ export const deleteAddress = async (req, res) => {
     const deleted = await prisma.address.deleteMany({
       where: {
         id: addressId,
-        userId,
+        userId: userId,
       },
     });
 

@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import AdminOrderDetailsView from './orders-details'
 import { Dialog } from '@radix-ui/react-dialog'
-import ShoppingOrderDetailsView from './orders-details'
 
-function ShoppingOrders() {
-  const [openDetailsDialog, setOpenDetailsDialog] = useState(false)
+const AdminOrdersView = () => {
+  const[openDetailsDialog, setOpenDetailsDialog] = useState(false)
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Order History</CardTitle>
+        <CardTitle>All Orders</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -42,8 +42,8 @@ function ShoppingOrders() {
                   }>
                     View Details
                 </Button>
-              <ShoppingOrderDetailsView />
-            </Dialog> 
+              <AdminOrderDetailsView />
+            </Dialog>
             </TableCell>
           </TableBody>
         </Table>
@@ -52,4 +52,4 @@ function ShoppingOrders() {
   )
 }
 
-export default ShoppingOrders
+export default AdminOrdersView

@@ -6,24 +6,24 @@ function AddressCard({
   addressInfo,
   handleDeleteAddress,
   handleEditAddress,
-  setCurrentSelectedAddress,
-  selectedId,
+  // setCurrentSelectedAddress,
+  // selectedId,
 }) {
-    console.log(addressInfo,"adrresd info")
+    // console.log(addressInfo,"adrresd info")
   if (!addressInfo) return null;
 
   return (
     <Card
-      onClick={
-        setCurrentSelectedAddress
-          ? () => setCurrentSelectedAddress(addressInfo)
-          : null
-      }
-      className={`cursor-pointer hover:shadow-md transition ${
-        selectedId?.id === addressInfo?.id
-          ? "border-red-900 border-[4px]"
-          : "border-black"
-      }`}
+      // onClick={
+      //   setCurrentSelectedAddress
+      //     ? () => setCurrentSelectedAddress(addressInfo)
+      //     : null
+      // }
+      // className={`cursor-pointer hover:shadow-md transition ${
+      //   selectedId?.id === addressInfo?.id
+      //     ? "border-red-900 border-[4px]"
+      //     : "border-black"
+      // }`}
     >
       <CardContent className="grid p-4 gap-4">
         <Label>Address: {addressInfo?.address}</Label>

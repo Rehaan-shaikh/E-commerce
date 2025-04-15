@@ -222,3 +222,18 @@ export const registerFormControls = [  //array of objs
       placeholder: "Enter any additional notes",
     },
   ];
+
+export const CheckoutformControls=[
+    {
+      label: "Order Status",
+      name: "status",
+      componentType: "select",
+      options: [
+        { id: "pending", label: "Pending" },
+        { id: "inProcess", label: "In Process" },
+        { id: "inShipping", label: "In Shipping" },
+        { id: "delivered", label: "Delivered" },
+        { id: "rejected", label: "Rejected" },
+      ],
+    },
+  ]

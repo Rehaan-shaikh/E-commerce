@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import ProductFilter from "@/components/shopping-view/filter";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +25,7 @@ import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { Item } from "@radix-ui/react-dropdown-menu";
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
 function createSearchParamsHelper(filterParams) {
@@ -59,17 +59,24 @@ const ShoppingListing = () => {
   );
   const { user } = useSelector((state) => state.auth);
 
+  const { cartItems } = useSelector((state) => state.shopCart);
+
   const [filters, setFilters] = useState({}); // filter is object of 2 arrays 
   const [sort, setSort] = useState(null);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
-  const [searchParams, setSearchParams] = useSearchParams();
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categorySearchParam = searchParams.get("category");
+  // console.log(categorySearchParam, "categorySearchParam from listing page")
 
   useEffect(() => {
     setSort("price-lowtohigh");
-    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {}); 
-  }, []);
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, [categorySearchParam]);  
+  //whener=ver categorySearchParam (category) changes, it will set the filters and sort to default values.
+  //and this filter value is been set in the session storage in header component.
 
   useEffect(() => {
     if (filters !== null && sort !== null)
@@ -127,16 +134,32 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
 
-  function handleAddToCart(productId) {
+  function handleAddToCart(productId, getCurrentStock) {
     // console.log(productId, "product id from product details dialog")
-    dispatch(addToCart({userId : user?.id, productId : productId , quantity : 1})).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems({userId : user?.id}));
-        alert("Product added to cart successfully");
+    // console.log(cartItems, "cartItems from handleAddToCart")
+    // console.log(getCartItem, "getCartItem from handleAddToCart")
+  
+    let getCartItem = cartItems.items || [];
+  
+    if (getCartItem.length) {
+      const getCurrIndex = getCartItem.findIndex((Item) => Item.productId === productId);
+      if (getCurrIndex > -1) {
+        const getCurrQuantity = getCartItem[getCurrIndex].quantity;
+        if (getCurrQuantity + 1 > getCurrentStock) {
+          alert("only " + getCurrentStock + " items can be added to cart");
+          return;
+        }
+      }
     }
-
+  
+    dispatch(addToCart({ userId: user?.id, productId: productId, quantity: 1 })).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems({ userId: user?.id }));
+        alert("Product added to cart successfully");
+      }
+    });
   }
-)};
+  
 
   // console.log(user?.id, "user id from listing page")
   // console.log(productList, "i am productlis")

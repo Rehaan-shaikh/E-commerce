@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,11 +23,11 @@ import { Label } from "@radix-ui/react-label";
 
 
 function MenuItems() {
-  const [searchParams, setSearchParams] = useState(new URLSearchParams());
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   function handleNavigate(getCurrentMenuItem) {
+    // console.log(getCurrentMenuItem, "getCurrentMenuItem from header");
     sessionStorage.removeItem("filters");
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
@@ -37,13 +37,14 @@ function MenuItems() {
             category: [getCurrentMenuItem.id],
           }
         : null;
+    // console.log(currentFilter, "currentFilter from header");
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
-    // location.pathname.includes("listing") && currentFilter !== null
-    //   ? setSearchParams(
-    //       new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-    //     ):
+    location.pathname.includes("listing") && currentFilter !== null
+      ? setSearchParams(
+          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+        ):
      navigate(getCurrentMenuItem.path);
   }
 

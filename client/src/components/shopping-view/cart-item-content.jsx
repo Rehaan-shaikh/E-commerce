@@ -131,7 +131,8 @@ const UserCartItemsContent = ({cartItem}) => {
     // console.log(cartItem , "cartItem")
 
     const { user } = useSelector((state) => state.auth);
-    // const { cartItems } = useSelector((state) => state.shopCart);
+    const { cartItems } = useSelector((state) => state.shopCart);
+    const { productList } = useSelector((state) => state.shopProducts);
 
     const dispatch = useDispatch();
     
@@ -146,11 +147,29 @@ const UserCartItemsContent = ({cartItem}) => {
         });
     }
 
-    function handleUpdateQuantity(getCartItem, typeOfAction) {
-        // console.log(getCartItem , typeOfAction , "getCartItem typeOfAction")
+    function handleUpdateQuantity(getCartItemData, typeOfAction) {
+      // console.log(productList , "productList")
+      // console.log(getCartItemData , typeOfAction , "getCartItem typeOfAction")
+      const getCurrCartIndex = productList.findIndex((product) => product.id === getCartItemData?.productId);
+      // console.log(getCurrCartIndex , "getCurrCartIndex")
+      const getTotalStock = productList[getCurrCartIndex]?.totalStock;
+        if (typeOfAction == "plus") {
+          let getCartItem = cartItems.items || [];
+          if (getCartItem.length) {
+            const getCurrIndex = getCartItem.findIndex((Item) => Item.productId === getCartItemData.productId);
+            if (getCurrIndex > -1) {
+              const getCurrQuantity = getCartItem[getCurrIndex].quantity;
+              if (getCurrQuantity + 1 > getTotalStock) {
+                alert("only " + getTotalStock + " items can be added to cart");
+                return;
+              }
+            }
+          }
+        }
+
         dispatch(updateCartQuantity({
-                userId : user?.id , productId : getCartItem?.productId ,
-                 quantity : typeOfAction === "plus" ? getCartItem?.quantity + 1 : getCartItem?.quantity - 1
+                userId : user?.id , productId : getCartItemData?.productId ,
+                 quantity : typeOfAction === "plus" ? getCartItemData?.quantity + 1 : getCartItemData?.quantity - 1
             }))
 
     }    

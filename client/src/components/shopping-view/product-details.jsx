@@ -15,10 +15,12 @@ import { setProductDetails } from "@/store/shop/products-slice";
 // import { addReview, getReviews } from "@/store/shop/review-slice";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
+  // console.log(productDetails, "productDetails");
 //   const [reviewMsg, setReviewMsg] = useState("");
 //   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
 //   const { cartItems } = useSelector((state) => state.shopCart);
 //   const { reviews } = useSelector((state) => state.shopReview);
 
@@ -29,7 +31,19 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
 //     setRating(getRating);
 //   }
 
-  function handleAddToCart(getCurrentProductId) {
+  function handleAddToCart(getCurrentProductId , getCurrentStock) {
+    let getCartItem = cartItems.items || [];
+  
+    if (getCartItem.length) {
+      const getCurrIndex = getCartItem.findIndex((Item) => Item.productId === getCurrentProductId);
+      if (getCurrIndex > -1) {
+        const getCurrQuantity = getCartItem[getCurrIndex].quantity;
+        if (getCurrQuantity + 1 > getCurrentStock) {
+          alert("only " + getCurrentStock + " items can be added to cart");
+          return;
+        }
+      }
+    }
     dispatch(
       addToCart({
         userId: user?.id,
@@ -137,7 +151,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 onClick={() =>
                   handleAddToCart(
                     productDetails?.id,
-                    // productDetails?.totalStock
+                    productDetails?.totalStock
                   )
                 }
               >

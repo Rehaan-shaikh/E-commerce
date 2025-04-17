@@ -19,6 +19,7 @@ import ShoppingAccount from "./pages/shopping-view/Account";
 import UnAuth from "./pages/Unauth-page";
 import CheckAuth from "./components/Common/Check-Auth";
 import NotFound from "./pages/not-found";
+import SearchProducts from "./pages/shopping-view/Search";
 
 function App() {
   const { user, isAuthenticated } = useSelector(
@@ -84,6 +85,7 @@ function App() {
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="account" element={<ShoppingAccount />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
 
         <Route path="/unauth-page" element={<UnAuth />} />

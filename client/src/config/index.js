@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+
 export const registerFormControls = [  //array of objs
     {
       name: "userName",

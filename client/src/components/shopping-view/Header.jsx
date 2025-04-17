@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import { HousePlug, LogOut, Menu, Search, ShoppingCart, UserCog } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -56,7 +56,10 @@ function MenuItems() {
           className="text-sm font-medium cursor-pointer"
           key={menuItem.id}
         >
-          {menuItem.label}
+          <div className="flex items-center gap-2">
+            {menuItem.label}
+            {menuItem.id === "search" ? <Search className="h-5 w-5"/> : null}
+          </div>
         </Label>
       ))}
     </nav>

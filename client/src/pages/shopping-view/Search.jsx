@@ -23,16 +23,18 @@ function SearchProducts() {
   const { user } = useSelector((state) => state.auth);
 
   const { cartItems } = useSelector((state) => state.shopCart);
+  
   useEffect(() => {
-    if (keyword && keyword.trim() !== "" && keyword.trim().length > 3) {
+    if (keyword && keyword.trim() !== "" && keyword.trim().length > 2) {
       setTimeout(() => {
-        setSearchParams(new URLSearchParams(`?keyword=${keyword}`));
+        setSearchParams(new URLSearchParams(`?keyword=${keyword}`));  //though we dont necessarily need this to show the results
         dispatch(getSearchResults(keyword));
       }, 1000);
     } else {
       setSearchParams(new URLSearchParams(`?keyword=${keyword}`));
       dispatch(resetSearchResults());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
@@ -76,7 +78,7 @@ function SearchProducts() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  console.log(searchResults, "searchResults");
+  // console.log(searchResults, "searchResults");
 
   return (
     <div className="container mx-auto md:px-6 px-4 py-8">

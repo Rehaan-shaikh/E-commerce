@@ -15,21 +15,24 @@ import { addReview, getReviews } from "@/store/shop/review-slice";
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
+
   const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   const { reviews } = useSelector((state) => state.shopReview);
 
 
   function handleRatingChange(getRating) {
-    console.log(getRating, "getRating");
+    // console.log(getRating, "getRating");
 
     setRating(getRating);
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock) {
     let getCartItems = cartItems.items || [];
-
+    console.log(getCurrentProductId, "getCurrentProductId");
+    
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
         (item) => item.productId === getCurrentProductId
@@ -38,7 +41,6 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
         if (getQuantity + 1 > getTotalStock) {
           alert(`Only ${getQuantity} quantity can be added for this item`)
-
           return;
         }
       }
@@ -51,7 +53,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems({userId: user?.id}));  
         alert("Product is added to cart")
       }
     });
@@ -59,24 +61,24 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
 
   function handleDialogClose() {
     setOpen(false);
-    dispatch(setProductDetails());
+    dispatch(setProductDetails());  //set product details to null
     setRating(0);
     setReviewMsg("");
   }
 
   function handleAddReview() {
-    console.log("Payload to backend:", {
-      productId: Number(productDetails?.id || productDetails?._id),
-      userId: Number(user?.id),
-      userName: user?.userName,
-      reviewMessage: reviewMsg,
-      reviewValue: rating,
-    });
+    // console.log("Payload to backend:", {
+    //   productId: Number(productDetails?.id),
+    //   userId: Number(user?.id),
+    //   userName: user?.userName,
+    //   reviewMessage: reviewMsg,
+    //   reviewValue: rating,
+    // });
     dispatch(
       addReview({
-        productId: Number(productDetails?.id || productDetails?._id),
-        userId: Number(user?.id),
-        userName: user?.userName,
+        productId: Number(productDetails?.id),
+        userId: Number(user?.id),  //current logged in user 
+        userName: user?.userName,  
         reviewMessage: reviewMsg,
         reviewValue: rating,
       })
@@ -85,27 +87,26 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       if (data?.payload?.success) {
         setRating(0);
         setReviewMsg("");
-        dispatch(getReviews(productDetails?._id));
+        dispatch(getReviews(productDetails?.id));
         alert("Review added successfully!")
       }
       else{
         alert(data?.payload?.message)
+        setRating(0);
+        setReviewMsg("");
       }
     });
     
   }
 
   useEffect(() => {
-    if (productDetails !== null) dispatch(getReviews(Number(productDetails?.id || productDetails?._id)));
+    if (productDetails !== null) dispatch(getReviews(Number(productDetails?.id)));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productDetails]);
 
-  console.log(reviews, "reviews");
+  console.log(reviews, "reviews"); //whole productreview table
+  console.log(productDetails, "productDetails"); //single product details
 
-  const averageReview =
-    reviews && reviews.length > 0
-      ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
-        reviews.length
-      : 0;
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
@@ -142,10 +143,10 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           </div>
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
-              <StarRatingComponent rating={averageReview} />
+              <StarRatingComponent rating={productDetails?.averageReview? productDetails.averageReview.toFixed(1) : 0} />
             </div>
             <span className="text-muted-foreground">
-              ({averageReview.toFixed(2)})
+              ({productDetails?.averageReview? productDetails.averageReview.toFixed(1) : 0})
             </span>
           </div>
           <div className="mt-5 mb-5">
@@ -158,7 +159,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 className="w-full"
                 onClick={() =>
                   handleAddToCart(
-                    productDetails?._id,
+                    productDetails?.id,
                     productDetails?.totalStock
                   )
                 }
@@ -200,7 +201,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               <Label>Write a review</Label>
               <div className="flex gap-1">
                 <StarRatingComponent
-                  rating={rating}
+                  rating={rating} //initially rating value is passed as 0 when state gets updated so does its val
                   handleRatingChange={handleRatingChange}
                 />
               </div>

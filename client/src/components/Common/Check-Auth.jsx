@@ -25,6 +25,16 @@ function CheckAuth({ isAuthenticated, user, children }) {
       return <Navigate to="/shop/home" />;
     }
   }
+  if (
+    isAuthenticated &&
+    (location.pathname===("/")) )
+    {
+    if (user?.role === "admin") {
+      return <Navigate to="/admin/dashboard" />;
+    } else {
+      return <Navigate to="/shop/home" />;
+    }
+  }
 
   if (
     isAuthenticated &&

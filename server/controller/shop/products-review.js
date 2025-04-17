@@ -44,7 +44,7 @@ export const addProductReview = async (req, res) => {
     await prisma.product.update({
       where: { id: productId },
       data: {
-        averageReview,
+        averageReview,  //also a column of product table
       },
     });
 

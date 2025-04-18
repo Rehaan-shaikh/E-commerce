@@ -24,6 +24,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
     function handleDragOver(event) {
         event.preventDefault();
     }
+    
     function handleDrop(event) {
         event.preventDefault();
         // console.log(event.dataTransfer.files, "event.dataTransfer.files");
@@ -56,6 +57,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
 
     useEffect(() => {
         if (imageFile !== null) uploadImageToCloudinary();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [imageFile]);
 
 

@@ -9,6 +9,7 @@ import shopCartRouter from "./routes/shop/cart-routes.js"
 import shopAdressRouter from "./routes/shop/adress-routes.js"
 import shopSearchRouter from "./routes/shop/search-routes.js"
 import shopReviewRouter from "./routes/shop/review-routes.js"
+import commonFeatureRouter from "./routes/common/feature-routes.js"
 
 const app = express()
 const port = 3000
@@ -38,6 +39,8 @@ app.use("/api/shop/cart", shopCartRouter);
 app.use("/api/shop/address", shopAdressRouter);
 app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
+app.use("/api/common/feature", commonFeatureRouter);
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

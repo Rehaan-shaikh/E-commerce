@@ -19,7 +19,7 @@ function ShoppingOrderDetailsView() {
           </div>
           <div className="flex mt-2 items-center justify-between">
             <p className="font-medium">Order Date</p>
-            <Label>20/11/25</Label>
+            <Label>30/2/25</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
             <p className="font-medium">Order Price</p>

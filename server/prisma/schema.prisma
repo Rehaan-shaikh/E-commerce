@@ -50,8 +50,10 @@ model CartItem {
   productId Int
   quantity  Int
 
-  cart    Cart    @relation(fields: [cartId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  orders    Order[]
 }
 
 model Address {
@@ -64,6 +66,7 @@ model Address {
   notes     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  orders  Order[]
 }
 
 model ProductReview {
@@ -86,4 +89,26 @@ model Feature {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+model Order {
+  id              String       @id @default(uuid())
+  userId          String
+  cartId          Int
+  cartItems       CartItem   @relation(fields: [cartId], references: [id])
+  addressInfoId   Int
+  addressInfo     Address    @relation(fields: [addressInfoId], references: [id])
+  orderStatus     String
+  paymentMethod   String
+  paymentStatus   String
+  totalAmount     Float
+  orderUpdateDate DateTime    
+  orderDate       DateTime    
+  paymentId       String?
+  payerId         String?
+
+  createdAt       DateTime    @default(now())
+}
+
+
 

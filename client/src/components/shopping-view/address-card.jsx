@@ -6,7 +6,7 @@ function AddressCard({
   addressInfo,
   handleDeleteAddress,
   handleEditAddress,
-  // setCurrentSelectedAddress,
+  setCurrentSelectedAddress,
   // selectedId,
 }) {
     // console.log(addressInfo,"adrresd info")
@@ -14,11 +14,11 @@ function AddressCard({
 
   return (
     <Card
-      // onClick={
-      //   setCurrentSelectedAddress
-      //     ? () => setCurrentSelectedAddress(addressInfo)
-      //     : null
-      // }
+      onClick={
+        setCurrentSelectedAddress
+          ? () => setCurrentSelectedAddress(addressInfo)
+          : null
+      }
       // className={`cursor-pointer hover:shadow-md transition ${
       //   selectedId?.id === addressInfo?.id
       //     ? "border-red-900 border-[4px]"

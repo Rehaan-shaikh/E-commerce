@@ -93,7 +93,7 @@ model Feature {
 
 model Order {
   id              String       @id @default(uuid())
-  userId          String
+  userId          Int
   cartId          Int
   cartItems       CartItem   @relation(fields: [cartId], references: [id])
   addressInfoId   Int

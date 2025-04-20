@@ -10,9 +10,12 @@ import shopAdressRouter from "./routes/shop/adress-routes.js"
 import shopSearchRouter from "./routes/shop/search-routes.js"
 import shopReviewRouter from "./routes/shop/review-routes.js"
 import commonFeatureRouter from "./routes/common/feature-routes.js"
+import orderPaymentRouter from "./routes/shop/order-routes.js"
+
 
 const app = express()
 const port = 3000
+
 
 app.use(
     cors({
@@ -40,6 +43,7 @@ app.use("/api/shop/address", shopAdressRouter);
 app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/common/feature", commonFeatureRouter);
+app.use("/api/shop/order" ,orderPaymentRouter )
 
 
 app.get('/', (req, res) => {

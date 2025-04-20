@@ -28,48 +28,55 @@ function ShoppingCheckout() {
         )
       : 0;
 
-    function HandlePaypal() {
-      const orderData = {
-        userId: user?.id,
-        cartItems: cartItems?.items?.map((item) => ({
-          productId: item.productId,
-          title: item.title,
-          price: item.price,
-          salePrice: item.salePrice,
-          quantity: item.quantity,
-        })),
-        addressInfo : {
-          addressId: currentSelectedAddress?.id,
-          address: currentSelectedAddress?.address,
-          city: currentSelectedAddress?.city,
-          phone: currentSelectedAddress?.phone,
-          pincode: currentSelectedAddress?.pincode,
-          notes: currentSelectedAddress?.notes,
-        },
-        orderStatus: "pending",
-        paymentMethod: "paypal",
-        paymentStatus: "pending",
-        totalAmount: totalCartAmount,
-        orderDate: new Date(),
-        orderUpdateDate: new Date(),
-        paymentId: '',
-        payerId: '',
-      };
-    
-      // console.log(orderData , "orderData");
-
-      dispatch(
-        createNewOrder({orderData})
-      ).then((data) => {
-        console.log(data, "order data");
-        if (data?.payload?.success) {
-          alert("Order created successfully");
-          // window.location.href = data?.payload?.data?.approvalUrl;
-        } else {
-          alert("Error creating order");
+      function HandlePaypal() {
+        if (!Array.isArray(cartItems?.items) || cartItems.items.length === 0) {
+          alert("Cart is empty.");
+          return;
         }
-      });
-    }
+      
+        if (!currentSelectedAddress) {
+          alert("Please select an address.");
+          return;
+        }
+      
+        const orderData = {
+          userId: user?.id,
+          cartItems: cartItems.items.map((item) => ({
+            productId: item.productId,
+            title: item.title,
+            price: item.price,
+            salePrice: item.salePrice,
+            quantity: item.quantity,
+          })),
+          addressInfo: {
+            addressId: currentSelectedAddress.id,
+            address: currentSelectedAddress.address,
+            city: currentSelectedAddress.city,
+            phone: currentSelectedAddress.phone,
+            pincode: currentSelectedAddress.pincode,
+            notes: currentSelectedAddress.notes,
+          },
+          orderStatus: "pending",
+          paymentMethod: "paypal",
+          paymentStatus: "pending",
+          totalAmount: totalCartAmount,
+          orderDate: new Date(),
+          orderUpdateDate: new Date(),
+          paymentId: "",
+          payerId: "",
+        };
+      
+        dispatch(createNewOrder({ orderData })).then((data) => {
+          console.log(data, "order data");
+          if (data?.payload?.success) {
+            alert("Order created successfully");
+            // window.location.href = data?.payload?.data?.approvalUrl;
+          } else {
+            alert("Error creating order");
+          }
+        });
+      }
+      
     
 
   return (

@@ -12,6 +12,8 @@ function ShoppingCheckout() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const[currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  const [isPaymentStart, setIsPaymemntStart] = useState(false);
+  // const { approvalURL } = useSelector((state) => state.shopOrder);
 
   // console.log(currentSelectedAddress, "currentSelectedAddress");
   const totalCartAmount =
@@ -62,13 +64,18 @@ function ShoppingCheckout() {
         dispatch(createNewOrder({ orderData })).then((data) => {
           console.log(data, "order data");
           if (data?.payload?.success) {
-            alert("Order created successfully");
+            // alert("Order created successfully");
+            setIsPaymemntStart(true)
             // window.location.href = data?.payload?.data?.approvalUrl;
           } else {
-            alert("Error creating order");
+            setIsPaymemntStart(false)
+            // alert("Error creating order");
           }
         });
       }
+      // if (approvalURL) {
+      //   window.location.href = approvalURL;
+      // }
       
     
 

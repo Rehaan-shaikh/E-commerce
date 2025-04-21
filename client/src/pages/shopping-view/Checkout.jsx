@@ -13,7 +13,8 @@ function ShoppingCheckout() {
   const dispatch = useDispatch();
   const[currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
-  // const { approvalURL } = useSelector((state) => state.shopOrder);
+  const { approvalURL } = useSelector((state) => state.shopOrder);
+  console.log(approvalURL,"hi i am approvol")
 
   // console.log(currentSelectedAddress, "currentSelectedAddress");
   const totalCartAmount =
@@ -73,9 +74,9 @@ function ShoppingCheckout() {
           }
         });
       }
-      // if (approvalURL) {
-      //   window.location.href = approvalURL;
-      // }
+      if (approvalURL) {
+        window.location.href = approvalURL;
+      }
       
     
 

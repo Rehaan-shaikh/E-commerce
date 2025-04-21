@@ -11,7 +11,6 @@ function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  
   const[currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
 
   // console.log(currentSelectedAddress, "currentSelectedAddress");
@@ -48,14 +47,8 @@ function ShoppingCheckout() {
             salePrice: item.salePrice,
             quantity: item.quantity,
           })),
-          addressInfo: {
-            addressId: currentSelectedAddress.id,
-            address: currentSelectedAddress.address,
-            city: currentSelectedAddress.city,
-            phone: currentSelectedAddress.phone,
-            pincode: currentSelectedAddress.pincode,
-            notes: currentSelectedAddress.notes,
-          },
+          cartId: cartItems.id,
+          addressInfoId: currentSelectedAddress.id,
           orderStatus: "pending",
           paymentMethod: "paypal",
           paymentStatus: "pending",

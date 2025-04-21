@@ -8,7 +8,7 @@ export const createOrder = async (req, res) => {
     const {
       userId,
       cartItems,
-      addressInfo,
+      addressInfoId,
       orderStatus,
       paymentMethod,
       paymentStatus,
@@ -90,8 +90,8 @@ export const createOrder = async (req, res) => {
           orderUpdateDate: new Date(orderUpdateDate),
           paymentId,
           payerId,
-          addressInfo, // Store addressInfo as a JSON field (make sure it's supported in your schema)
-          cartItems,   // Alternatively, you can store cartItems in a related table if needed
+          addressInfoId,
+          cartId,
         },
       });
 

@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 import paypal from "../../helpers/paypal.js";
 
 export const createOrder = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const {
       userId,
@@ -25,7 +25,7 @@ export const createOrder = async (req, res) => {
     }, 0);
 
     // Log the calculated total to check if it's correct
-    console.log("Calculated Total:", calculatedTotal);
+    // console.log("Calculated Total:", calculatedTotal);
 
     // Ensure the totalAmount from the request matches the calculated total
     const totalAmount = calculatedTotal;
@@ -61,12 +61,12 @@ export const createOrder = async (req, res) => {
     };
 
     // Log the payment JSON to check structure before sending to PayPal
-    console.log("Payment JSON:", create_payment_json);
+    // console.log("Payment JSON:", create_payment_json);
 
     // Create the PayPal payment
     paypal.payment.create(create_payment_json, async (error, paymentInfo) => {
       if (error) {
-        console.error("Error creating PayPal payment:", error.response);
+        // console.error("Error creating PayPal payment:", error.response);
         return res.status(500).json({
           success: false,
           message: "Error while creating PayPal payment",
@@ -75,7 +75,7 @@ export const createOrder = async (req, res) => {
       }
 
       // Log the successful payment info to inspect the response
-      console.log("Payment created successfully:", paymentInfo);
+      // console.log("Payment created successfully:", paymentInfo);
 
       // Store order data in the database
       const newOrder = await prisma.order.create({
@@ -108,7 +108,7 @@ export const createOrder = async (req, res) => {
       });
     });
   } catch (e) {
-    console.error("Error in creating order:", e);
+    // console.error("Error in creating order:", e);
     res.status(500).json({
       success: false,
       message: "Some error occurred while creating the order",
@@ -116,6 +116,158 @@ export const createOrder = async (req, res) => {
     });
   }
 };
+
+
+export const capturePayment = async (req, res) => {
+  try {
+    console.log(req.body);
+    
+    const { paymentId, payerId, orderId } = req.body;
+
+    // Fetch order with cartId
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: { cartItems: true },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order can not be found",
+      });
+    }
+
+    // Update order payment status and details
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        paymentStatus: 'paid',
+        orderStatus: 'confirmed',
+        paymentId,
+        payerId,
+      },
+    });
+
+    // Update product stock based on cart items
+    for (let item of order.cartItems) {
+      const product = await prisma.product.findUnique({
+        where: { id: item.productId },
+      });
+
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: `Product not found: ${item.productId}`,
+        });
+      }
+
+      // Decrease the stock
+      await prisma.product.update({
+        where: { id: item.productId },
+        data: {
+          totalStock: product.totalStock - item.quantity,
+        },
+      });
+    }
+
+    // 💥 FIX: Delete all cart items before deleting the cart
+    await prisma.cartItem.deleteMany({
+      where: { cartId: order.cartId },
+    });
+
+    // Then delete the cart itself
+    await prisma.cart.delete({
+      where: { id: order.cartId },
+    });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: "Order confirmed",
+      data: updatedOrder,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred!",
+      error: e.message,
+    });
+  }
+};
+
+
+
+export const getAllOrdersByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch orders by userId
+    const orders = await prisma.order.findMany({
+      where: {
+        userId: parseInt(userId), // Make sure userId is in the correct format (if it's an integer)
+      },
+      include: {
+        cartItems: true, // Optionally include cartItems if needed
+        addressInfo: true, // Include address information if needed
+      },
+    });
+
+    if (orders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No orders found!",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred!",
+    });
+  }
+};
+
+export const getOrderDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Fetch order by id
+    const order = await prisma.order.findUnique({
+      where: {
+        id: id, // id should match your order model
+      },
+      include: {
+        cartItems: true, // Optionally include cartItems if needed
+        addressInfo: true, // Include address information if needed
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found!",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occurred!",
+    });
+  }
+};
+
 
 
 

@@ -4,6 +4,13 @@ function CheckAuth({ isAuthenticated, user, children }) {
   const location = useLocation();
 
   // console.log(location.pathname, isAuthenticated);
+  if (location.pathname === "/shop/paypal-return") {
+    return <>{children}</>;
+  }
+  if (location.pathname === "/shop/payment-success") {
+    return <>{children}</>;
+  }
+
   if (
     !isAuthenticated &&
     !(

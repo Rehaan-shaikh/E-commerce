@@ -16,6 +16,7 @@ model User {
   role     String          @default("user")
   cart     Cart?
   reviews  ProductReview[]
+  orders   Order[]
 }
 
 model Product {
@@ -41,19 +42,17 @@ model Cart {
   user      User       @relation(fields: [userId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  items     CartItem[]
+  items     CartItem[] // A cart can have many items
 }
 
 model CartItem {
-  id        Int @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   cartId    Int
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade) // Cascade delete on cart delete
   productId Int
-  quantity  Int
-
-  cart      Cart    @relation(fields: [cartId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
-
-  orders    Order[]
+  quantity  Int
+  Order     Order[] @relation("OrderItems") // Added relation to link CartItem to Order
 }
 
 model Address {
@@ -66,13 +65,13 @@ model Address {
   notes     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  orders  Order[]
+  orders    Order[]
 }
 
 model ProductReview {
   id            String   @id @default(uuid())
-  productId     Int // changed from String to Int
-  userId        Int // changed from String to Int
+  productId     Int
+  userId        Int
   userName      String
   reviewMessage String
   reviewValue   Int
@@ -90,25 +89,22 @@ model Feature {
   updatedAt DateTime @updatedAt
 }
 
-
 model Order {
-  id              String       @id @default(uuid())
+  id              String     @id @default(uuid())
   userId          Int
   cartId          Int
-  cartItems       CartItem   @relation(fields: [cartId], references: [id])
+  cartItems       CartItem[] @relation("OrderItems") // Corrected to CartItem[] to reflect multiple items
   addressInfoId   Int
   addressInfo     Address    @relation(fields: [addressInfoId], references: [id])
   orderStatus     String
   paymentMethod   String
   paymentStatus   String
   totalAmount     Float
-  orderUpdateDate DateTime    
-  orderDate       DateTime    
+  orderUpdateDate DateTime
+  orderDate       DateTime
   paymentId       String?
   payerId         String?
 
-  createdAt       DateTime    @default(now())
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
 }
-
-
-

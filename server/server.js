@@ -10,7 +10,8 @@ import shopAddressRouter from "./routes/shop/adress-routes.js";
 import shopSearchRouter from "./routes/shop/search-routes.js";
 import shopReviewRouter from "./routes/shop/review-routes.js";
 import commonFeatureRouter from "./routes/common/feature-routes.js";
-import orderPaymentRouter from "./routes/shop/order-routes.js"; // Updated import
+import orderPaymentRouter from "./routes/shop/order-routes.js";
+import adminOrderRoutes from "./routes/admin/order-routes.js"; 
 
 const app = express();
 const port = 3000;
@@ -44,6 +45,8 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/common/feature", commonFeatureRouter);
 app.use("/api/shop/order", orderPaymentRouter); // Order routes
+app.use("/api/admin/orders", adminOrderRoutes); // Order routes
+
 
 // Test route
 app.get("/", (req, res) => {

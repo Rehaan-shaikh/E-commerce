@@ -7,7 +7,7 @@ function AddressCard({
   handleDeleteAddress,
   handleEditAddress,
   setCurrentSelectedAddress,
-  // selectedId,
+  selectedId,
 }) {
     // console.log(addressInfo,"adrresd info")
   if (!addressInfo) return null;
@@ -19,11 +19,11 @@ function AddressCard({
           ? () => setCurrentSelectedAddress(addressInfo)
           : null
       }
-      // className={`cursor-pointer hover:shadow-md transition ${
-      //   selectedId?.id === addressInfo?.id
-      //     ? "border-red-900 border-[4px]"
-      //     : "border-black"
-      // }`}
+      className={`cursor-pointer hover:shadow-md transition ${
+        selectedId?.id === addressInfo?.id
+          ? "border-red-900 border-[4px]"
+          : "border-black"
+      }`}
     >
       <CardContent className="grid p-4 gap-4">
         <Label>Address: {addressInfo?.address}</Label>

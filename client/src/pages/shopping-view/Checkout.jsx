@@ -12,6 +12,7 @@ function ShoppingCheckout() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const[currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
   const { approvalURL } = useSelector((state) => state.shopOrder);
   console.log(approvalURL,"hi i am approvol")
@@ -86,7 +87,10 @@ function ShoppingCheckout() {
         <img src={img} className="h-full w-full object-cover object-center" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
-        <Address setCurrentSelectedAddress={setCurrentSelectedAddress}/>
+        <Address 
+        setCurrentSelectedAddress={setCurrentSelectedAddress}
+        selectedId={currentSelectedAddress}
+        />
         <div className="flex flex-col gap-4">
           {cartItems && cartItems.items && cartItems.items.length > 0
             ? cartItems.items.map((item) => (

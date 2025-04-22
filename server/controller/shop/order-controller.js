@@ -117,8 +117,8 @@ export const createOrder = async (req, res) => {
   }
 };
 
-
-export const capturePayment = async (req, res) => {
+//also a post request [for updating]
+export const capturePayment = async (req, res) => {  
   try {
     console.log(req.body);
     

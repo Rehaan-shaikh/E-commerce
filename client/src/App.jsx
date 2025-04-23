@@ -13,7 +13,6 @@ import AdminFeatures from "./pages/admin-view/features";
 import AdminProducts from "./pages/admin-view/products";
 import ShoppingLayout from "./components/shopping-view/layout";
 import ShoppingHome from "./pages/shopping-view/Home";
-import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingListing from "./pages/shopping-view/Listing";
 import ShoppingAccount from "./pages/shopping-view/Account";
 import UnAuth from "./pages/Unauth-page";
@@ -22,6 +21,7 @@ import NotFound from "./pages/not-found";
 import SearchProducts from "./pages/shopping-view/Search";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
+import ShoppingCheckout from "./pages/shopping-view/Checkout";
 
 function App() {
   const { user, isAuthenticated } = useSelector(

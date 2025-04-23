@@ -37,7 +37,7 @@ function SearchProducts() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
-  function handleAddtoCart(getCurrentProductId, getTotalStock) {
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
     console.log(cartItems);
     let getCartItems = cartItems.items || [];
 
@@ -63,13 +63,13 @@ function SearchProducts() {
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems({userId : user?.id}));
         alert("Product added to cart successfully.");
       }
     });
   }
 
-  function handleGetProductDetails(getCurrentProductId) {
+  function handleProductDetails(getCurrentProductId) {
     console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
   }
@@ -99,9 +99,9 @@ function SearchProducts() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {searchResults.map((item) => (
           <ShoppingProductTile
-            handleAddtoCart={handleAddtoCart}
+          handleAddToCart={handleAddToCart}
             product={item}
-            handleGetProductDetails={handleGetProductDetails}
+            handleProductDetails={handleProductDetails}
           />
         ))}
       </div>

@@ -14,12 +14,12 @@ import orderPaymentRouter from "./routes/shop/order-routes.js";
 import adminOrderRoutes from "./routes/admin/order-routes.js"; 
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // CORS setup
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

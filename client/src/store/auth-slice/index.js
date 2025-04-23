@@ -16,7 +16,7 @@ export const registerUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/user/register",
+        `${import.meta.env.VITE_API_URL}/api/user/register`,
         formData,
         {
           withCredentials: true,
@@ -36,7 +36,7 @@ export const loginUser = createAsyncThunk(
   async (formData , { rejectWithValue }) => {
     try{
     const response = await axios.post(
-      "http://localhost:3000/api/user/login",
+      `${import.meta.env.VITE_API_URL}/api/user/login`,
       formData,
       {
         withCredentials: true,
@@ -54,7 +54,7 @@ export const logoutUser = createAsyncThunk(
 
   async () => {
     const response = await axios.post(
-      "http://localhost:3000/api/user/logout",
+      `${import.meta.env.VITE_API_URL}/api/user/logout`,
       {},
       {
         withCredentials: true,
@@ -70,7 +70,7 @@ export const checkAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/user/check-auth",
+        `${import.meta.env.VITE_API_URL}/api/user/check-auth`,
         {
           withCredentials: true,
         }

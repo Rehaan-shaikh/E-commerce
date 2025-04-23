@@ -2,9 +2,9 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 
 cloudinary.config({
-  cloud_name: "dfhxh3eam",
-  api_key: "561741923486594",
-  api_secret: "O_XnwOZIy0Z6jaP62PhM8l_ypEM",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const storage = multer.memoryStorage();//Multer is a Node.js middleware used for handling multipart/form-data, which is primarily used for uploading files.

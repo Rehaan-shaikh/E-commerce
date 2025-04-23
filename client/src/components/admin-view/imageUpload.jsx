@@ -44,7 +44,7 @@ const ProductImageUpload = ({imageFile,setImageFile,uploadedImageUrl,setUploaded
         const data = new FormData();
         data.append("my_file", imageFile);
         const response = await axios.post(
-          "http://localhost:3000/api/admin/products/upload-image",
+          `${import.meta.env.VITE_API_URL}/api/admin/products/upload-image`,
           data
         );
         // console.log(response, "i am cloudinary response");

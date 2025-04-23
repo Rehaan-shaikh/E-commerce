@@ -85,6 +85,7 @@ function ShoppingHome() {
       }
     });
   }
+  console.log(import.meta.env.VITE_API_URL, "VITE_API_URL")
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);

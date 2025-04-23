@@ -12,7 +12,7 @@ import prisma from "../../DB/db.config.js";
 //       },
 //     });
   
-//     //http://localhost:3000/api/post/search?q=NKOCET Use such endpoint
+//     //${import.meta.env.VITE_API_URL}/api/post/search?q=NKOCET Use such endpoint
 //     return res.json({ status: 200, data: posts });
 //   };
   

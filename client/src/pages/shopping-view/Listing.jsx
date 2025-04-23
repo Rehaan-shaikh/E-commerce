@@ -110,6 +110,7 @@ const ShoppingListing = () => {
     dispatch(fetchProductDetails(id));
   }
 
+
   function handleFilter(getSectionId, getCurrentOption) {
     // https://chatgpt.com/share/67f91cac-dc38-8007-b595-a8ed2c88f15a reference to understand the code
     let cpyFilters = { ...filters };
@@ -175,7 +176,7 @@ const ShoppingListing = () => {
           <h2 className="text-lg font-extrabold">All Products</h2>
           <div className="flex items-center gap-3">
             <span className="text-muted-foreground">
-              {productList.length} Products
+              {productList && productList.length} Products
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

@@ -1,4 +1,4 @@
-import ProductFilter from "@/components/shopping-view/filter";
+// import ProductFilter from "@/components/shopping-view/filter";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,11 +21,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import React from 'react'
 import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/products-slice";
-import ShoppingProductTile from "@/components/shopping-view/product-tile";
+// import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
-import ProductDetailsDialog from "@/components/shopping-view/product-details";
+// import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { Item } from "@radix-ui/react-dropdown-menu";
+import ProductFilter from "@/components/shopping-view/filter";
+import ShoppingProductTile from "@/components/shopping-view/product-tile";
+import ProductDetailsDialog from "@/components/shopping-view/product-details";
 // It is a React Router hook that lets you read and update the query parameters in the browser URL.
 
 function createSearchParamsHelper(filterParams) {

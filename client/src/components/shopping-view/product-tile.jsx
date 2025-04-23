@@ -2,8 +2,9 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 // import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
+import { brandOptionsMap, categoryOptionsMap } from "@/config";
 // import { brandOptionsMap, categoryOptionsMap } from "@/config";
-import { brandOptionsMap, categoryOptionsMap } from "../../config"; // or adjust based on actual relative path
+// import { brandOptionsMap, categoryOptionsMap } from "../../config"; // or adjust based on actual relative path
 
 
 function ShoppingProductTile({

@@ -3,6 +3,7 @@ import accImg from "../../assets/account.jpg";
 import Address from "@/components/shopping-view/address";
 import Orders from "@/components/shopping-view/orders";
 import ShoppingOrders from "@/components/shopping-view/orders";
+// import ShoppingOrders from "@/components/shopping-view/orders";
 
 
 function ShoppingAccount() {

@@ -1,13 +1,15 @@
-import CommonForm from '@/components/Common/form'
 import { Button } from '@/components/ui/button';
 import {Sheet, SheetContent , SheetHeader , SheetTitle } from '@/components/ui/sheet';
 import { addProductFormElements } from '@/config';
 import React, { useEffect } from 'react'
 import { useState , Fragment} from 'react';
-import ProductImageUpload from '../../components/admin-view/imageUpload';
+// import ProductImageUpload from '../../components/admin-view/imageUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewProduct, deleteProduct, editProduct, fetchAllProducts } from '@/store/admin/product-slice';
+import CommonForm from '@/components/Common/form';
 import AdminProductTile from '@/components/admin-view/product-tile';
+import ProductImageUpload from '@/components/admin-view/imageUpload';
+// import AdminProductTile from '@/components/admin-view/product-tile';
 
 const initialState = {
   image : null,

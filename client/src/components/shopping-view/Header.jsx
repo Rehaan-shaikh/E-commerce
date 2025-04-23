@@ -16,10 +16,10 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { useEffect, useState } from "react";
-import UserCartWrappe from "./cart-wrapper";
-import UserCartWrapper from "./cart-wrapper";
+// import UserCartWrapper from "./cart-wrapper";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Label } from "@radix-ui/react-label";
+import UserCartWrapper from "./cart-wrapper";
 
 
 function MenuItems() {

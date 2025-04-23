@@ -1,3 +1,4 @@
+// import ProductImageUpload from '@/components/admin-view/imageUpload';
 import ProductImageUpload from '@/components/admin-view/imageUpload';
 import { Button } from '@/components/ui/button';
 import { addFeatureImage, getFeatureImages } from '@/store/common';

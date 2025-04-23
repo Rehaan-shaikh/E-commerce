@@ -1,11 +1,13 @@
-import Address from "@/components/shopping-view/address";
+// import Address from "@/components/shopping-view/address";
 import img from "../../assets/account.jpg";
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
-import UserCartItemsContent from "@/components/shopping-view/cart-item-content";
+// import UserCartItemsContent from "@/components/shopping-view/cart-item-content";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createNewOrder } from "@/store/shop/order-slice";
+import Address from "@/components/shopping-view/address";
+import UserCartItemsContent from "@/components/shopping-view/cart-item-content";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);

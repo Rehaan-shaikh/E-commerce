@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import ShoppingHeader from "./Header";
+// import ShoppingHeader from "./Header";
 
 function ShoppingLayout() {
   return (

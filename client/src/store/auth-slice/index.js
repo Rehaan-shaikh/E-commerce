@@ -6,6 +6,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   user: null,
+  token:null
 };
 
 // The registerUser (createAsyncThunk) function is triggered when you dispatch it from your React component.
@@ -64,15 +65,39 @@ export const logoutUser = createAsyncThunk(
     return response.data;
   }
 );
+
 // checkAuth is automatically get called when refresh beacuse of useEffect in the app.jsx
+// export const checkAuth = createAsyncThunk(
+//   "/auth/checkauth",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(
+//         `${import.meta.env.VITE_API_URL}/api/user/check-auth`,
+//         {
+//           withCredentials: true,
+//         }
+//       );
+//       return response.data;
+//     } catch (error) {
+//       console.error("CheckAuth Error:", error);
+//       return rejectWithValue(error.response?.data || "Auth failed");
+//     }
+//   }
+// );
+
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
-  async (_, { rejectWithValue }) => {
+  async (token, { rejectWithValue }) => {
     try {
+      console.log(token , "token from check-auth")   // consoling as null
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/user/check-auth`,
-        {
-          withCredentials: true,
+        {        
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Cache-Control": 
+            "no-cache, no-store, must-revalidate , proxy-revalidate",
+          },
         }
       );
       return response.data;
@@ -90,8 +115,12 @@ const authSlice = createSlice({
   initialState,  //this 2 parameters are part of slice syntax(initialState and name)
 
   reducers: {
-     
     setUser: (state, action) => {},
+    resetToken: (state) => {
+      state.token = null;
+      state.isAuthenticated = false; 
+      state.user = null; 
+    }
   },
 
   // extraReducers is where you handle asynchronous actions (like API calls) that are defined outside the slice.
@@ -118,18 +147,20 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         console.log(action , "action");
-
         state.isLoading = false;
         state.user = action.payload.status==200? action.payload.data : null;
         // console.log(state.user , "Login fulfilled")
         state.isAuthenticated = action.payload.status==200;
-
+        state.token = action.payload.token;
+        sessionStorage.setItem("token", JSON.stringify(action.payload.token));
+        console.log(action.payload.token , "token from login")
         // console.log(state.isAuthenticated , "boolean")
       })
       .addCase(loginUser.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.token = null;
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
@@ -138,7 +169,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;    
         state.isAuthenticated = true;  
-        // console.log(action,"chechkout")      
+        console.log(action,"chechkauth")      
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;
@@ -153,7 +184,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser , resetToken } = authSlice.actions;
 export default authSlice.reducer;
 
 

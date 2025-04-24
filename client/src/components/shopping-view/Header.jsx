@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { HousePlug, LogOut, Menu, Search, ShoppingCart, UserCog } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -13,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logoutUser } from "@/store/auth-slice";
+import { logoutUser, resetToken } from "@/store/auth-slice";
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { useEffect, useState } from "react";
 // import UserCartWrapper from "./cart-wrapper";
@@ -83,7 +84,10 @@ function HeaderRightContent() {
   
 
   function handleLogout() {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
+    dispatch(resetToken());
+    sessionStorage.clear();
+    navigate("/auth/login");
   }
 
   // console.log(cartItems, "cartItems from header");

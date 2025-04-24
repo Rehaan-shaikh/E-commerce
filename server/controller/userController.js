@@ -21,18 +21,18 @@ export const RegisterUser = async (req, res) => {
             data: { username: userName, email, password: hashedPassword }
         });
 
-        const token = jwt.sign(
-            { id: newUser.id, email: newUser.email, role: "user" },
-            JWT_SECRET,
-            { expiresIn: "7d" }   // Persistent login for 7 days
-        );
+        // const token = jwt.sign(
+        //     { id: newUser.id, email: newUser.email, role: "user" },
+        //     JWT_SECRET,
+        //     { expiresIn: "7d" }   // Persistent login for 7 days
+        // );
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-            maxAge: 60 * 60 * 1000 
-        });
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: "Lax",
+        //     maxAge: 60 * 60 * 1000 
+        // });
 
         return res.status(201).json({
             status: 201,
@@ -67,8 +67,6 @@ export const LoginUser = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(401).json({ status: 401, message: "Invalid email or password" });
         }
-
-        // console.log(user, "hi i am user from login")
         
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
@@ -76,14 +74,12 @@ export const LoginUser = async (req, res) => {
             { expiresIn: "1h" }  
         );
 
-        // console.log(token, "hi i am token from login")
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "Lax",
-            maxAge: 60 * 60 * 1000 
-        });
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: "Lax",
+        //     maxAge: 60 * 60 * 1000 
+        // });
 
         return res.status(200).json({
             status: 200,
@@ -94,7 +90,8 @@ export const LoginUser = async (req, res) => {
                 email: user.email,
                 userName: user.username,
                 role: user.role
-            }
+            },
+            token
         });
 
     } catch (error) {
@@ -104,8 +101,43 @@ export const LoginUser = async (req, res) => {
 };
 
 // ✅ Check Authentication
+// export const CheckAuth = async (req, res) => {
+//     const token = req.cookies.token;
+
+//     if (!token) {
+//         return res.status(401).json({ success: false, message: "Not authenticated" });
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, JWT_SECRET);
+//         const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+
+//         if (!user) {
+//             return res.status(404).json({ success: false, message: "User not found" });
+//         }
+//         return res.status(200).json({
+//             success: true,
+//             message: "User authenticated",
+//             user: {
+//                 id: user.id,
+//                 email: user.email,
+//                 userName: user.username,
+//                 role: user.role
+//             }
+//         });
+
+//     } catch (error) {
+//         if (error instanceof jwt.TokenExpiredError) {
+//             return res.status(401).json({ success: false, message: "Token expired" });
+//         }
+
+//         return res.status(401).json({ success: false, message: "Invalid token" });
+//     }
+// };
+
 export const CheckAuth = async (req, res) => {
-    const token = req.cookies.token;
+    const token = req.headers["authorization"]?.split(" ")[1];
+    console.log(token, "token from check auth") //it is coming as undefined
 
     if (!token) {
         return res.status(401).json({ success: false, message: "Not authenticated" });
@@ -113,18 +145,11 @@ export const CheckAuth = async (req, res) => {
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-
         const user = await prisma.user.findUnique({ where: { id: decoded.id } });
-        // console.log(user , "hi i am user data")
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-
-        // console.log(user , "hi i am user data")
-
-        // console.log(token, "hi i am token from login")
-
         return res.status(200).json({
             success: true,
             message: "User authenticated",

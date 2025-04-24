@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";  // ✅ No Router here
 import { useSelector, useDispatch } from "react-redux";
-import { checkAuth } from "./store/auth-slice";
 
 import AuthLayout from "./components/auth/layout";
 import Login from "./pages/auth/Login";
@@ -16,12 +15,13 @@ import ShoppingHome from "./pages/shopping-view/Home";
 import ShoppingListing from "./pages/shopping-view/Listing";
 import ShoppingAccount from "./pages/shopping-view/Account";
 import UnAuth from "./pages/Unauth-page";
-import CheckAuth from "./components/Common/Check-Auth";
 import NotFound from "./pages/not-found";
 import SearchProducts from "./pages/shopping-view/Search";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import ShoppingCheckout from "./pages/shopping-view/Checkout";
+import { checkAuth } from "./store/auth-slice";
+import CheckAuth from "./components/Common/Check-Auth";
 
 function App() {
   const { user, isAuthenticated } = useSelector(
@@ -30,7 +30,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
+    const Token = JSON.parse(sessionStorage.getItem("token"))
+    console.log(Token , "token from session storage (App.jsx)")  // consoling as null
+    dispatch(checkAuth(Token));
   }, [dispatch]);
   
 

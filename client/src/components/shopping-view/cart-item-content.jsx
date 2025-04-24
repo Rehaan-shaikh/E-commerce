@@ -21,6 +21,7 @@ const UserCartItemsContent = ({cartItem}) => {
         ).then((data) => {
           if (data?.payload?.success) {
             alert("Cart item is deleted successfully");
+            // console.log(data?.payload?.message);
           }
         });
     }

@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import routes from "./routes/index.js";
 import cookieParser from "cookie-parser";
+import userAuthRoutes from "./routes/userRoutes.js";
 import adminProductsRouter from "./routes/admin/products-routes.js";
 import shopProductsRouter from "./routes/shop/products-routes.js";
 import shopCartRouter from "./routes/shop/cart-routes.js";
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use(routes);
 
 // Routes setup
+app.use("/api/user", userAuthRoutes);
 app.use("/api/admin/products", adminProductsRouter);
 app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/cart", shopCartRouter);

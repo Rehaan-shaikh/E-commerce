@@ -69,11 +69,11 @@ function ShoppingHome() {
     navigate(`/shop/listing`);
   }
 
-  function handleGetProductDetails(getCurrentProductId) {
+  function handleProductDetails(getCurrentProductId) {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddtoCart(getCurrentProductId) {
+  function handleAddToCart(getCurrentProductId) {
     dispatch(
       addToCart({
         userId: user?.id,
@@ -82,7 +82,7 @@ function ShoppingHome() {
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems({userId: user?.id }));
         alert("Product added to cart successfully!");
       }
     });
@@ -208,9 +208,9 @@ function ShoppingHome() {
             {productList && productList.length > 0
               ? productList.map((productItem , index) => (
                   <ShoppingProductTile key={index}
-                    handleGetProductDetails={handleGetProductDetails}
+                  handleProductDetails={handleProductDetails}
                     product={productItem}
-                    handleAddtoCart={handleAddtoCart}
+                    handleAddToCart={handleAddToCart}
                   />
                 ))
               : null}

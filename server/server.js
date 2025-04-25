@@ -33,6 +33,15 @@ app.use(
   })
 );
 
+// Serve static assets
+app.use(express.static(path.join(__dirname, "./client/build")));
+
+// For any other request, serve index.html (for React Router)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(routes);

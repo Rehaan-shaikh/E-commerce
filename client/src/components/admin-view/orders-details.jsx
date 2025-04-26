@@ -7,6 +7,7 @@ import { Badge } from "../ui/badge";
 import { useDispatch, useSelector } from "react-redux";
 import CommonForm from "../Common/form";
 import { getAllOrdersForAdmin, getOrderDetailsForAdmin, updateOrderStatus } from "@/store/admin/order-slice";
+import { toast } from "react-toastify";
 
 
 const initialFormData = {
@@ -31,7 +32,7 @@ function AdminOrderDetailsView({ orderDetails }) {
         dispatch(getOrderDetailsForAdmin(orderDetails?.id));
         dispatch(getAllOrdersForAdmin());
         setFormData(initialFormData);
-        alert(data?.payload?.message);
+        toast.success("Order status updated successfully") 
       }
     });
   }

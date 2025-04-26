@@ -11,6 +11,7 @@ import {
 } from "@/store/shop/address-slice";
 import AddressCard from "./address-card";
 import CommonForm from "../Common/form";
+import { toast } from "react-toastify";
 // import AddressCard from "./address-card";
 
 const initialAddressFormData = {
@@ -33,7 +34,7 @@ function Address({setCurrentSelectedAddress , selectedId}) {
 
     if (addressList.length >= 3 && currentEditedId === null) {
       setFormData(initialAddressFormData);
-      alert("You can add max 3 addresses");
+      toast.error("You can add max 3 addresses");
       return;
     }
 

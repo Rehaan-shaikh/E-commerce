@@ -7,6 +7,7 @@ import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const initialState = {
@@ -25,7 +26,8 @@ function AuthLogin() {
     dispatch(loginUser(formData)).then((data) => {
     // console.log(data.payload)
       if (data?.payload?.status==200) {
-        alert("Success")
+        // alert("Success")
+        toast.success("Login Successfull")
         // console.log(data?.payload ,"PAylod Ex");
         // toast({
         //   title: data?.payload?.message,
@@ -33,7 +35,8 @@ function AuthLogin() {
     }
     else{
       // console.log(data)
-      alert(data.payload.message);
+      // alert(data.payload.message);
+      toast.error(data.payload.message)
     }
   })
   }

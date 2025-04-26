@@ -13,6 +13,9 @@ import shopReviewRouter from "./routes/shop/review-routes.js";
 import commonFeatureRouter from "./routes/common/feature-routes.js";
 import orderPaymentRouter from "./routes/shop/order-routes.js";
 import adminOrderRoutes from "./routes/admin/order-routes.js"; 
+// import path from "path";
+// import { fileURLToPath } from "url";
+// import { dirname } from "path";
 
 const app = express();
 const port = process.env.PORT;
@@ -32,14 +35,17 @@ app.use(
     credentials: true,
   })
 );
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
-// Serve static assets
-app.use(express.static(path.join(__dirname, "./client/build")));
+// // Serve static assets from client/dist
+// app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// For any other request, serve index.html (for React Router)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
+// // For any other request, serve index.html from client/dist
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+// });
+
 
 
 app.use(express.json());

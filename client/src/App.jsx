@@ -22,6 +22,7 @@ import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import ShoppingCheckout from "./pages/shopping-view/Checkout";
 import { checkAuth } from "./store/auth-slice";
 import CheckAuth from "./components/Common/Check-Auth";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const { user, isAuthenticated } = useSelector(
@@ -31,7 +32,7 @@ function App() {
 
   useEffect(() => {
     const Token = JSON.parse(sessionStorage.getItem("token"))
-    console.log(Token , "token from session storage (App.jsx)")  // consoling as null
+    console.log(Token , "token from session storage (App.jsx)") 
     dispatch(checkAuth(Token));
   }, [dispatch]);
   
@@ -99,6 +100,7 @@ function App() {
         
 
       </Routes>
+      <ToastContainer />
     </div>
   );
 }
